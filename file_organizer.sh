@@ -14,7 +14,7 @@ for file in ~/Downloads/*; do
     elif [[ $file == *.pdf ]]; then 
         mkdir -p ~/Downloads/pdf
         mv "$file" ~/Downloads/pdf/
-    elif [[ $file == *.mp4 || $file == *.mov ]]; then  # Fixed missing `then`
+    elif [[ $file == *.mp4 || $file == *.mov ]]; then
         mkdir -p ~/Downloads/videos
         mv "$file" ~/Downloads/videos/
     elif [[ $file == *.zip || $file == *.tar.* ]]; then
@@ -26,7 +26,7 @@ for file in ~/Downloads/*; do
     elif [[ $file == *.py || $file == *.ipynb || $file == *.db ]]; then
         mkdir -p ~/Downloads/python
         mv "$file" ~/Downloads/python/
-    else  # Removed `; then` (incorrect syntax)
+    else 
         mkdir -p ~/Downloads/others
         mv "$file" ~/Downloads/others/
     fi
