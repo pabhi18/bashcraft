@@ -25,7 +25,7 @@
 
 
 TARGET_HOST="8.8.8.8"
-NETWORK_INTERFACE="eth0"
+NETWORK_INTERFACE="en0"
 INTERVAL=5
 
 # Function to Check Network connectivity
