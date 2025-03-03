@@ -1,15 +1,12 @@
 #!/bin/bash
 
-# Define S3 bucket name
-bucket_name="backup-my-system"
-
-# Function to create a ZIP file with a timestamp
+# Function to create a ZIP file 
 create_zip() {
    local input_path="$1"
    local timestamp=$(date +"%Y%m%d%H%M%S")
    local zip_name="$(basename "$input_path")_$timestamp.zip"
    
-   # Create the ZIP file and suppress output
+   # Create the ZIP file
    zip -r "$zip_name" "$input_path" > /dev/null
    
    echo "$zip_name"
@@ -18,15 +15,18 @@ create_zip() {
 # Function to upload the ZIP file to S3
 upload_to_s3() { 
    local file_path="$1"
-   aws s3 cp "$file_path" "s3://$bucket_name/"
+   local bucket_name="$2"
+   aws s3 cp "$file_path" "s3://$bucket_name/" > /dev/null
 }
 
-# Prompt user for the path of the file or directory to back up
+# path of the file or directory to back up
 read -p "Enter the path of the directory or file to back up: " input_path
 if [ ! -e "$input_path" ]; then
     echo "Error: The specified path does not exist."
     exit 1
 fi
+
+read -p "Enter the name of the S3 bucket: " bucket_name
 
 # Create ZIP file
 zip_file=$(create_zip "$input_path")
@@ -39,10 +39,10 @@ if [ ! -f "$zip_file" ]; then
 fi
 
 # Upload ZIP file to S3
-upload_to_s3 "$zip_file"
+upload_to_s3 "$zip_file" "$bucket_name"
 echo "Uploaded $zip_file to s3://$bucket_name/"
 
-# Remove local ZIP file after successful upload
+# Remove ZIP file after upload
 rm "$zip_file"
 echo "Removed local ZIP file: $zip_file"
 
